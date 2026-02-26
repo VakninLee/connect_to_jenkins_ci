@@ -1,20 +1,20 @@
 pipeline {
     agent any
+    triggers { cron('H/10 * * * *') }
+    
+    // You must add this block to "load" a secret
+    environment {
+        // 'my-cred-id' must exist in Manage Jenkins > Credentials
+        MY_PASSWORD = credentials('my-cred-id') 
+    }
 
     stages {
-        stage('Build') {
+        stage('Secure Work') {
             steps {
-                echo 'Building... ASSIPH'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing... ASSIPH'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying... ASSIPH'
+                // Jenkins will mask the actual output with ****
+                sh 'echo "My password is $MY_PASSWORD"'
+                sh 'echo "access_key: AKIARPIT7QCJZ5BR553U"'
+                sh 'echo "secret_key: DSnPnbAH1QwEu+utk4ZWO/c1KlcYT4/1AgaJ5HLXL"'
             }
         }
     }
